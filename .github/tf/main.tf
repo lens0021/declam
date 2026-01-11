@@ -22,8 +22,8 @@ import {
 resource "github_repository" "this" {
   allow_auto_merge                        = false
   allow_merge_commit                      = false
-  allow_rebase_merge                      = true
-  allow_squash_merge                      = false
+  allow_rebase_merge                      = false
+  allow_squash_merge                      = true
   allow_update_branch                     = true
   archived                                = false
   archive_on_destroy                      = true
