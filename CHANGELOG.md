@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/lens0021/declam/compare/v0.3.0...v0.3.1) (2026-01-11)
+
+
+### Bug Fixes
+
+* Ship shell file ([e6fc806](https://github.com/lens0021/declam/commit/e6fc806efd7bde3252d3f3839fb697de5a6712f4))
+
 ## [0.3.0](https://github.com/lens0021/declam/compare/v0.2.0...v0.3.0) (2026-01-11)
 
 
