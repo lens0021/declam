@@ -31,7 +31,7 @@ pub fun sym_list() {
     const longest_dist_col = $ jq -r '.sym | values | .[]' ~/.config/declair/config.json | wc -L $? as Int
     for src in srcs {
         const resolved_src = replace(src, "~", user_home)
-        let dist = $ jq -r '.sym["{src}"]' ~/.config/declair/config.json $?
+        const dist = $ jq -r '.sym["{src}"]' ~/.config/declair/config.json $?
         const resolved_dist = replace(dist, "~", user_home)
         let state = "Unknown"
         if file_exists(resolved_dist) {
