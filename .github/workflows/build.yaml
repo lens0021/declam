@@ -1,0 +1,29 @@
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8  # v6.0.1
+        with:
+          persist-credentials: false
+
+      - uses: lens0021/setup-amber@58394844f9bb51e8b559f224b03f6dcb3d79f644  # v2.2.0
+        with:
+          amber-version: 0.5.1-alpha
+
+      - run: |
+          amber build src/main.ab
+          mv src/main.ab declam
+          tar -czf declam-${{ github.ref_name }}.tar.gz declam
+
+      - name: Upload release asset
+        run: gh release upload ${{ github.ref_name }} declam-${{ github.ref_name }}.tar.gz --clobber
+
+      - name: Publish release
+        run: gh release edit ${{ github.ref_name }} --draft=false
