@@ -13,3 +13,33 @@ jobs:
       pull-requests: write
     steps:
       - uses: googleapis/release-please-action@16a9c90856f42705d54a6fda1823352bdc62cf38 # v4.4.0
+        id: release
+
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8  # v6.0.1
+        if: ${{ steps.release.outputs.release_created }}
+        with:
+          persist-credentials: false
+
+      - uses: lens0021/setup-amber@58394844f9bb51e8b559f224b03f6dcb3d79f644  # v2.2.0
+        if: ${{ steps.release.outputs.release_created }}
+        with:
+          amber-version: 0.5.1-alpha
+
+      - name: Build and package
+        if: ${{ steps.release.outputs.release_created }}
+        run: |
+          amber build src/main.ab
+          mv src/main.ab declam
+          tar -czf declam-${{ steps.release.outputs.tag_name }}.tar.gz declam
+
+      - name: Upload release asset
+        if: ${{ steps.release.outputs.release_created }}
+        run: gh release upload ${{ steps.release.outputs.tag_name }} declam-${{ steps.release.outputs.tag_name }}.tar.gz --clobber
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Publish release
+        if: ${{ steps.release.outputs.release_created }}
+        run: gh release edit ${{ steps.release.outputs.tag_name }} --draft=false
+        env:
+          GH_TOKEN: ${{ github.token }}
