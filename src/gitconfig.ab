@@ -7,7 +7,7 @@ import {
 const user_home = trust $ sudo -u#1000 bash -c 'echo \$HOME' $
 const declair = "{user_home}/.config/declair/config.json"
 
-fun gitconfig_plan(): Null? {
+pub fun gitconfig_plan(): Null? {
     const cnfs = split($ jq -r '.git.config | keys | .[]' {declair} $?, "\n")
     let change_count = 0
     for cnf in cnfs {
@@ -24,7 +24,7 @@ fun gitconfig_plan(): Null? {
     }
 }
 
-fun gitconfig_apply(): Null? {
+pub fun gitconfig_apply(): Null? {
     const cnfs = split($ jq -r '.git.config | keys | .[]' {declair} $?, "\n")
     let change_count = 0
     for cnf in cnfs {
@@ -42,18 +42,4 @@ fun gitconfig_apply(): Null? {
     }
     // Get the content from declair.json
     // for each entries
-}
-
-main(args) {
-    if {
-        args[1] == "plan" {
-            gitconfig_plan()?
-        }
-        args[1] == "apply" {
-            gitconfig_apply()?
-        }
-        else {
-            echo "Unknown command: {args[1]}"
-        }
-    }
 }

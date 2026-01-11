@@ -1,0 +1,92 @@
+import * from "./gitconfig.ab"
+import * from "./pm.ab"
+import * from "./sym.ab"
+import * from "./rpm-repo.ab"
+
+main(args) {
+    if {
+        args[1] == "gitconfig" {
+            if {
+                args[2] == "plan" {
+                    gitconfig_plan()?
+                }
+                args[2] == "apply" {
+                    gitconfig_apply()?
+                }
+                else {
+                    echo "Unknown subcommand: {args[2]}"
+                }
+            }
+        }
+        args[1] == "sym" {
+            if {
+                args[2] == "list" {
+                    sym_list()?
+                }
+
+                args[2] == "ensure" {
+                    if len(args) > 3 {
+                        sym_ensure([args[3]])?
+                    } else {
+                        sym_ensure()?
+                    }
+                }
+                else {
+                    echo "Unknown subcommand: {args[2]}"
+                }
+            }
+        }
+        args[1] == "pm" {
+            if {
+                args[2] == "list" {
+                    pm_list()?
+                }
+                args[2] == "ensure" {
+                    if len(args) > 3 {
+                        pm_ensure(args[3])?
+                    } else {
+                        echo "No package given"
+                    }
+                }
+                args[2] == "install" {
+                    if len(args) > 3 {
+                        pm_ensure(args[3])?
+                    } else {
+                        echo "No package given"
+                    }
+                }
+                else {
+                    echo "Unknown subcommand: {args[2]}"
+                }
+            }
+
+        }
+        args[1] == "rpm-repo" {
+            if {
+                args[2] == "list" {
+                    dnf_repo_list()?
+                }
+                args[2] == "ensure" {
+                    if len(args) > 3 {
+                        dnf_repo_ensure(args[3])?
+                    } else {
+                        echo "No package given"
+                    }
+                }
+                args[2] == "install" {
+                    if len(args) > 3 {
+                        dnf_repo_ensure(args[3])?
+                    } else {
+                        echo "No package given"
+                    }
+                }
+                else {
+                    echo "Unknown subcommand: {args[2]}"
+                }
+            }
+        }
+        else {
+            echo "Unknown subcommand: {args[1]}"
+        }
+    }
+}

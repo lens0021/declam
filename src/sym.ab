@@ -25,7 +25,7 @@ fun dirname(path: Text): Text {
 }
 
 #[allow_absurd_cast]
-fun sym_list() {
+pub fun sym_list() {
     const srcs = split($ jq -r '.sym | keys | .[]' ~/.config/declair/config.json $?, "\n")
     const longest_src_col = $ jq -r '.sym | keys | .[]' ~/.config/declair/config.json | wc -L $? as Int
     const longest_dist_col = $ jq -r '.sym | values | .[]' ~/.config/declair/config.json | wc -L $? as Int
@@ -69,20 +69,6 @@ pub fun sym_ensure(targets: [Text] = [Text]): Null? {
                 dir_create(dirname(dist))?
                 symlink_create(resolve(target), dist)?
             }
-        }
-    }
-}
-
-main(args) {
-    if args[1] == "list" {
-        sym_list()?
-    }
-
-    if args[1] == "ensure" {
-        if len(args) >= 2 {
-            sym_ensure([args[2]])?
-        } else {
-            sym_ensure()?
         }
     }
 }
