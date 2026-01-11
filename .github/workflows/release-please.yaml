@@ -29,7 +29,7 @@ jobs:
         if: ${{ steps.release.outputs.release_created }}
         run: |
           amber build src/main.ab
-          mv src/main.ab declam
+          mv src/main.sh declam
           tar -czf declam-${{ steps.release.outputs.tag_name }}.tar.gz declam
 
       - name: Upload release asset
