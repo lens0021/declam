@@ -37,8 +37,8 @@ resource "github_repository" "this" {
   has_wiki                                = false
   homepage_url                            = ""
   name                                    = "declam"
-  squash_merge_commit_message             = "COMMIT_MESSAGES"
-  squash_merge_commit_title               = "COMMIT_OR_PR_TITLE"
+  squash_merge_commit_message             = "BLANK"
+  squash_merge_commit_title               = "PR_TITLE"
   topics                                  = []
   visibility                              = "public"
   vulnerability_alerts                    = false
