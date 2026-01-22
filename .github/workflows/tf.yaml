@@ -1,3 +1,5 @@
+---
+name: Tofu
 on:
   pull_request:
     paths:
