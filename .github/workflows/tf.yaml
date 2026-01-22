@@ -39,6 +39,8 @@ jobs:
           EOF
         working-directory: .
 
+      - run: tofu init
+
       - id: plan
         run: tofu plan -no-color -lock=false
         env:
