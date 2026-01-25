@@ -1,0 +1,26 @@
+---
+name: Check
+on:
+  push:
+permissions: {}
+jobs:
+  rumdl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: rvben/rumdl@2c8cb017490f9bc5dc969f3b9de1da81385985de # v0.0.203
+
+  amber:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8  # v6.0.1
+        with:
+          persist-credentials: false
+      - uses: lens0021/setup-amber@58394844f9bb51e8b559f224b03f6dcb3d79f644  # v2.2.0
+        with:
+          amber-version: 0.5.1-alpha
+      - run: |
+          amber check src/main.ab
