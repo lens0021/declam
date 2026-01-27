@@ -31,7 +31,6 @@ resource "github_repository" "this" {
   delete_branch_on_merge      = true
   description                 = ""
   has_discussions             = false
-  has_downloads               = true
   has_issues                  = true
   has_projects                = false
   has_wiki                    = false
