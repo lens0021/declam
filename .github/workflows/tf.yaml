@@ -61,7 +61,7 @@ jobs:
           git clone --single-branch -b repo-vulnrability-alerts \
             https://github.com/stevehipwell/terraform-provider-github.git
           cd terraform-provider-github
-          git checkout b0d23accbe7f8d887e96de9dac9e6326c66a3ab8
+          git checkout 389ba147ced89fa01b17cb54cf196df54ad8bf3a
           CGO_ENABLED=0 go build -ldflags="-s -w" -o ${{ github.workspace }}/.github/tf/terraform-provider-github
           chmod +x ${{ github.workspace }}/.github/tf/terraform-provider-github
           echo "Built provider from:"
