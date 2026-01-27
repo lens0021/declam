@@ -58,7 +58,8 @@ jobs:
       - name: Build terraform-provider-github
         working-directory: /tmp
         run: |
-          git clone https://github.com/integrations/terraform-provider-github.git
+          git clone --single-branch -b repo-vulnrability-alerts \
+            https://github.com/integrations/terraform-provider-github.git
           cd terraform-provider-github
           git checkout b0d23accbe7f8d887e96de9dac9e6326c66a3ab8
           CGO_ENABLED=0 go build -ldflags="-s -w" -o ${{ github.workspace }}/.github/tf/terraform-provider-github
