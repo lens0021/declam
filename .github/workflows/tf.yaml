@@ -67,6 +67,12 @@ jobs:
           echo "Built provider from:"
           git log -1 --oneline
 
+      - name: Verify provider binary
+        run: |
+          ls -lh ${{ github.workspace }}/.github/tf/terraform-provider-github
+          file ${{ github.workspace }}/.github/tf/terraform-provider-github
+        working-directory: ${{ github.workspace }}
+
       - name: Configure dev_overrides for custom provider
         working-directory: ${{ github.workspace }}
         run: |
@@ -79,6 +85,8 @@ jobs:
             direct {}
           }
           EOF
+          echo "=== dev_overrides configured ==="
+          cat ~/.config/opentofu/tofurc
 
       - name: Generate main.tf with test configuration
         run: |
@@ -146,12 +154,18 @@ jobs:
 
       # Run Terraform operations
       - name: Initialize Tofu
-        run: tofu init
+        run: |
+          tofu init
+          echo "=== Checking if dev_overrides is active ==="
 
       - name: Run Tofu plan
         id: plan
         continue-on-error: true
-        run: tofu plan -no-color
+        run: |
+          echo "=== Provider version check ==="
+          tofu version
+          echo "=== Running plan ==="
+          tofu plan -no-color
         env:
           TF_LOG: DEBUG
 
