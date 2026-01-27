@@ -12,7 +12,7 @@ on:
 
 defaults:
   run:
-    working-directory: .tf
+    working-directory: .github/tf
 
 jobs:
   plan:
