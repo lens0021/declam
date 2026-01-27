@@ -12,8 +12,7 @@ terraform {
 }
 
 provider "github" {
-  owner                                   = "lens0021"
-  ignore_vulnerability_alerts_during_read = true
+  owner = "lens0021"
 }
 
 import {
@@ -21,28 +20,29 @@ import {
   to = github_repository.this
 }
 resource "github_repository" "this" {
-  allow_auto_merge            = false
-  allow_merge_commit          = false
-  allow_rebase_merge          = false
-  allow_squash_merge          = true
-  allow_update_branch         = true
-  archived                    = false
-  archive_on_destroy          = true
-  auto_init                   = false
-  delete_branch_on_merge      = true
-  description                 = ""
-  has_discussions             = false
-  has_downloads               = true
-  has_issues                  = true
-  has_projects                = false
-  has_wiki                    = false
-  homepage_url                = ""
-  name                        = "declam"
-  squash_merge_commit_message = "BLANK"
-  squash_merge_commit_title   = "PR_TITLE"
-  topics                      = []
-  visibility                  = "public"
-  web_commit_signoff_required = false
+  allow_auto_merge                        = false
+  allow_merge_commit                      = false
+  allow_rebase_merge                      = false
+  allow_squash_merge                      = true
+  allow_update_branch                     = true
+  archived                                = false
+  archive_on_destroy                      = true
+  auto_init                               = false
+  delete_branch_on_merge                  = true
+  description                             = ""
+  has_discussions                         = false
+  has_downloads                           = true
+  has_issues                              = true
+  has_projects                            = false
+  has_wiki                                = false
+  homepage_url                            = ""
+  ignore_vulnerability_alerts_during_read = true
+  name                                    = "declam"
+  squash_merge_commit_message             = "BLANK"
+  squash_merge_commit_title               = "PR_TITLE"
+  topics                                  = []
+  visibility                              = "public"
+  web_commit_signoff_required             = false
 
   security_and_analysis {
     secret_scanning {
