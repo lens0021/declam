@@ -28,7 +28,18 @@ jobs:
 
       - run: tofu init
 
-      - run: tofu init
+      - name: Setup local provider
+        run: |
+          mkdir -p ~/.config/opentofu
+          cat > ~/.config/opentofu/tofurc << 'EOF'
+          provider_installation {
+            dev_overrides {
+              "integrations/github" = "${{ github.workspace }}/.github/tf"
+            }
+            direct {}
+          }
+          EOF
+        working-directory: .
 
       - id: plan
         run: tofu plan -no-color
