@@ -3,12 +3,12 @@ name: Tofu
 on:
   pull_request:
     paths:
-      - ".tf/**"
+      - ".github/tf/**"
   push:
     branches:
       - main
     paths:
-      - ".tf/**"
+      - ".github/tf/**"
 
 defaults:
   run:
