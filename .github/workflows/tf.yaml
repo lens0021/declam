@@ -136,17 +136,6 @@ jobs:
             ${{ matrix.vulnerability_alerts }}
             web_commit_signoff_required = false
           }
-
-          import {
-            id = "declam"
-            to = github_workflow_repository_permissions.this
-          }
-
-          resource "github_workflow_repository_permissions" "this" {
-            repository                       = github_repository.this.name
-            default_workflow_permissions     = "read"
-            can_approve_pull_request_reviews = true
-          }
           HCLEOF
 
           echo "=== Generated configuration: ${{ matrix.name }} ==="
