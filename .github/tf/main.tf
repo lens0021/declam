@@ -42,15 +42,6 @@ resource "github_repository" "this" {
   topics                      = []
   visibility                  = "public"
   web_commit_signoff_required = false
-
-  security_and_analysis {
-    secret_scanning {
-      status = "enabled"
-    }
-    secret_scanning_push_protection {
-      status = "enabled"
-    }
-  }
 }
 
 import {
