@@ -20,44 +20,39 @@ const user_home = trust $ sudo -u#1000 bash -c 'echo \$HOME' $
 #[allow_absurd_cast]
 pub fun dconf_list() {
     const keys = split($ jq -r '.dconf | keys | .[]' ~/.config/declair/config.json $?, "\n")
-    const longest_key_col = $ jq -r '.dconf | keys | .[]' ~/.config/declair/config.json | wc -L $? as Int
-    const longest_val_col = $ jq -r '.dconf | values | .[]' ~/.config/declair/config.json | wc -L $? as Int
-    let longest_actual_val_col = 0
     for key in keys {
         const desired = $ jq -r '.dconf["{key}"]' ~/.config/declair/config.json $?
         let state = "Unknown"
         let actual = "-"
         actual = trust $ dconf read '{key}' $
-        if len(actual) > longest_actual_val_col {
-            longest_actual_val_col = len(actual)
-        }
         if actual == desired {
             state = "OK"
         } else {
             state = "Mismatched"
+            echo "{key} {desired} {actual} 👉 {state}"
         }
-        // TODO: Colorize
-        echo rpad(key, " ", longest_key_col + 2) + rpad(desired, " ", longest_val_col+2) + rpad(actual, " ", longest_actual_val_col + 2) + state
     }
 }
 
-// pub fun dconf_ensure(pkg: Text): Null?  {
-//     $ sudo dnf install -y {pkg} $ failed {
-//         return null
-//     }
-//     const installed = get_installed_version(pkg)?
-//     const updated_json = $ jq '.rpm["{pkg}"] = "{installed}"' ~/.config/declair/config.json $ failed {
-//         echo "Failed to update declair config file."
-//         return null
-//     }
-//     file_write("{user_home}/.config/declair/config.json", updated_json) failed {
-//         echo "Failed to update declair config file."
-//         return null
-//     }
-// }
+pub fun dconf_ensure(key: Text): Null?  {
+    echo "Previously: {trust $ dconf read '{key}' $}"
+    const val = $ jq -r '.dconf["{key}"]' {user_home}/.config/declair/config.json $?
+    $ dconf write '{key}' "{val}" $ failed {
+        echo "Failed to `dconf write`."
+        exit 1
+    }
+    const updated_json = $ jq '.dconf["{key}"] = "{val}"' {user_home}/.config/declair/config.json $ failed {
+        echo "Failed to update declair config file."
+        return null
+    }
+    file_write("{user_home}/.config/declair/config.json", updated_json) failed {
+        echo "Failed to update declair config file."
+        return null
+    }
+}
 
 pub fun dconf_write(key: Text, value: Text): Null  {
-    $ dconf write '{key}' '{value}' $ failed {
+    $ dconf write '{key}' "{value}" $ failed {
         echo "write failed"
         return null
     }

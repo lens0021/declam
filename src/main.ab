@@ -35,6 +35,14 @@ main(args) {
                         exit 1
                     }
                 }
+                args[2] == "ensure" {
+                    if len(args) > 3 {
+                        dconf_ensure(args[3])?
+                    } else {
+                        echo "No key is given"
+                        exit 1
+                    }
+                }
                 else {
                     echo "Unknown subcommand: {args[2]}"
                     echo "Available subcommands: list ensure"
