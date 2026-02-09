@@ -1,0 +1,68 @@
+import {
+    array_contains,
+} from "std/array"
+import {
+    dir_create,
+    dir_exists,
+    file_chmod,
+    file_exists,
+    file_write,
+    symlink_create,
+} from "std/fs"
+import {
+    split,
+    replace,
+    rpad,
+} from "std/text"
+
+const user_home = trust $ sudo -u#1000 bash -c 'echo \$HOME' $
+
+#[allow_absurd_cast]
+pub fun dconf_list() {
+    const keys = split($ jq -r '.dconf | keys | .[]' ~/.config/declair/config.json $?, "\n")
+    for key in keys {
+        const desired = $ jq -r '.dconf["{key}"]' ~/.config/declair/config.json $?
+        let state = "Unknown"
+        let actual = "-"
+        actual = trust $ dconf read '{key}' $
+        if actual == desired {
+            state = "OK"
+        } else {
+            state = "Mismatched"
+            echo "{key} {desired} {actual} 👉 {state}"
+        }
+    }
+}
+
+pub fun dconf_ensure(key: Text): Null?  {
+    echo "Previously: {trust $ dconf read '{key}' $}"
+    const val = $ jq -r '.dconf["{key}"]' {user_home}/.config/declair/config.json $?
+    $ dconf write '{key}' "{val}" $ failed {
+        echo "Failed to `dconf write`."
+        exit 1
+    }
+    const updated_json = $ jq '.dconf["{key}"] = "{val}"' {user_home}/.config/declair/config.json $ failed {
+        echo "Failed to update declair config file."
+        return null
+    }
+    file_write("{user_home}/.config/declair/config.json", updated_json) failed {
+        echo "Failed to update declair config file."
+        return null
+    }
+}
+
+pub fun dconf_write(key: Text, value: Text): Null  {
+    $ dconf write '{key}' "{value}" $ failed {
+        echo "write failed"
+        return null
+    }
+    const updated_json = $ jq '.dconf["{key}"] = "{value}"' ~/.config/declair/config.json $ failed {
+        echo "Failed to update declair config file."
+        return null
+    }
+    file_write("{user_home}/.config/declair/config.json", updated_json) failed {
+        echo "Failed to update declair config file."
+        return null
+    }
+    echo "Done"
+}

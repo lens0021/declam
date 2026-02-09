@@ -1,4 +1,5 @@
 import * from "./gitconfig.ab"
+import * from "./dconf.ab"
 import * from "./pm.ab"
 import * from "./sym.ab"
 import * from "./rpm-repo.ab"
@@ -16,6 +17,35 @@ main(args) {
                 else {
                     echo "Unknown subcommand: {args[2]}"
                     echo "Available subcommands: plan apply"
+                    exit 1
+                }
+            }
+        }
+        args[1] == "dconf" {
+            if {
+                args[2] == "list" {
+                    dconf_list()?
+                }
+
+                args[2] == "write" {
+                    if len(args) > 4 {
+                        dconf_write(args[3], args[4])
+                    } else {
+                        echo "Not key and value are given"
+                        exit 1
+                    }
+                }
+                args[2] == "ensure" {
+                    if len(args) > 3 {
+                        dconf_ensure(args[3])?
+                    } else {
+                        echo "No key is given"
+                        exit 1
+                    }
+                }
+                else {
+                    echo "Unknown subcommand: {args[2]}"
+                    echo "Available subcommands: list write ensure"
                     exit 1
                 }
             }
@@ -99,7 +129,7 @@ main(args) {
         }
         else {
             echo "Unknown subcommand: {args[1]}"
-            echo "Available subcommands: gitconfig sym pm rpm-repo"
+            echo "Available subcommands: gitconfig sym pm rpm-repo dconf"
             exit 1
         }
     }
