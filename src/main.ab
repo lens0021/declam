@@ -45,7 +45,7 @@ main(args) {
                 }
                 else {
                     echo "Unknown subcommand: {args[2]}"
-                    echo "Available subcommands: list ensure"
+                    echo "Available subcommands: list write ensure"
                     exit 1
                 }
             }
@@ -129,7 +129,7 @@ main(args) {
         }
         else {
             echo "Unknown subcommand: {args[1]}"
-            echo "Available subcommands: gitconfig sym pm rpm-repo"
+            echo "Available subcommands: gitconfig sym pm rpm-repo dconf"
             exit 1
         }
     }
