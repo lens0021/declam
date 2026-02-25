@@ -53,12 +53,13 @@ resource "github_repository" "this" {
   }
 }
 
-import {
-  id = "declam"
-  to = github_workflow_repository_permissions.this
-}
-resource "github_workflow_repository_permissions" "this" {
-  repository                       = github_repository.this.name
-  default_workflow_permissions     = "read"
-  can_approve_pull_request_reviews = true
-}
+# secrets.GITHUB_TOKEN does not have the permission for this:
+# import {
+#   id = "declam"
+#   to = github_workflow_repository_permissions.this
+# }
+# resource "github_workflow_repository_permissions" "this" {
+#   repository                       = github_repository.this.name
+#   default_workflow_permissions     = "read"
+#   can_approve_pull_request_reviews = true
+# }
