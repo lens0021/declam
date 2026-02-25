@@ -42,12 +42,29 @@ jobs:
             ${{ steps.plan.outputs.stdout }}
             \`\`\`
             `;
-            github.rest.issues.createComment({
+            const comments = await github.rest.issues.listComments({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: output,
             });
+            const existing = comments.data.find(c =>
+              c.user.type === 'Bot' && c.body.includes('#### OpenTofu Plan')
+            );
+            if (existing) {
+              github.rest.issues.updateComment({
+                comment_id: existing.id,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: output,
+              });
+            } else {
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: output,
+              });
+            }
   
   apply:
     if: github.event_name == 'push'
